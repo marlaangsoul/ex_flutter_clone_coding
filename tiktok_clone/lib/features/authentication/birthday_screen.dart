@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
-import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_boutton.dart';
+import 'package:tiktok_clone/features/onbarding/interests_screen.dart';
 
 import '../../constants/sizes.dart';
 
@@ -13,41 +14,42 @@ class BirthdayScreen extends StatefulWidget {
 }
 
 class BirthdayScreenState extends State<BirthdayScreen> {
-  final TextEditingController BirthdayController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
+
+  DateTime initiaDate = DateTime.now();
 
   String Birthday = "";
 
   @override
   void initState() {
     super.initState();
-    BirthdayController.addListener(() {
-      setState(() {
-        Birthday = BirthdayController.text;
-      });
-    });
+    _setTextFieldDate(initiaDate);
   }
 
   @override
   void dispose() {
-    BirthdayController.dispose();
+    _birthdayController.dispose();
     super.dispose();
   }
 
   void onNextTap() {
     //따로 onNextTap 안에 context를 보내지 않아도 된다.
     //StatefulWidget안에 State안에 있다면 어디서든 context를 사용할수 있기 때문이다.
-    if (_birthday.isEmpty) return;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const EmailScreen(),
+        builder: (context) => const InterestsScreen(),
       ),
     );
+  }
+
+  void _setTextFieldDate(DateTime date) {
+    final textDate = date.toString().split(" ").first;
+    _birthdayController.value = TextEditingValue(text: textDate);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           "Sign Up",
@@ -78,9 +80,9 @@ class BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v16,
             TextField(
-              controller: BirthdayController,
+              enabled: false,
+              controller: _birthdayController,
               decoration: InputDecoration(
-                hintText: "BirthDay",
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.grey.shade400,
@@ -97,11 +99,22 @@ class BirthdayScreenState extends State<BirthdayScreen> {
             Gaps.v16,
             GestureDetector(
               onTap: onNextTap,
-              child: FormButton(
-                disabled: Birthday.isEmpty,
+              child: const FormButton(
+                disabled: false,
               ),
             )
           ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: SizedBox(
+          height: 300,
+          child: CupertinoDatePicker(
+            maximumDate: initiaDate,
+            initialDateTime: initiaDate,
+            mode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: _setTextFieldDate,
+          ),
         ),
       ),
     );

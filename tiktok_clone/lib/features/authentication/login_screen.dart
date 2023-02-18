@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  void _onLoginTap(BuildContext context) {
+  void _onSignUpTap(BuildContext context) {
     Navigator.of(context).pop();
+  }
+
+  void _onEmailLoginTap(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginFormScreen(),
+      ),
+    );
   }
 
   @override
@@ -18,15 +27,15 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.size40),
           child: Column(
-            children: const [
+            children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Log in to TikTok",
                 style: TextStyle(
                     fontSize: Sizes.size28, fontWeight: FontWeight.w700),
               ),
               Gaps.v20,
-              Text(
+              const Text(
                 "Manage your account, check notifications, comment on videos, and more.",
                 style: TextStyle(
                   fontSize: Sizes.size16,
@@ -35,19 +44,23 @@ class LoginScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Gaps.v40,
-              AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.user),
-                  text: "Use phone or password"),
+              GestureDetector(
+                onTap: () => _onEmailLoginTap(
+                    context), // StatelessWidget이니까 context를 전달해줘야한다.
+                child: const AuthButton(
+                    icon: FaIcon(FontAwesomeIcons.user),
+                    text: "Use phone or password"),
+              ),
               Gaps.v16,
-              AuthButton(
+              const AuthButton(
                   icon: FaIcon(FontAwesomeIcons.facebook),
                   text: "Continue with Facebook"),
               Gaps.v16,
-              AuthButton(
+              const AuthButton(
                   icon: FaIcon(FontAwesomeIcons.apple),
                   text: "Continue with Apple"),
               Gaps.v16,
-              AuthButton(
+              const AuthButton(
                   icon: FaIcon(FontAwesomeIcons.google),
                   text: "Continue with Google"),
             ],
@@ -70,7 +83,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Gaps.h5,
               GestureDetector(
-                onTap: () => _onLoginTap(context),
+                onTap: () => _onSignUpTap(context),
                 child: Text(
                   "Sign up",
                   style: TextStyle(
