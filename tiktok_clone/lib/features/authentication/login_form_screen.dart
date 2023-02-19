@@ -24,11 +24,24 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         _formKey.currentState!.save();
         //print(formData.values);
         // save는 form을 save하면 모든 텍스트 입력에 onSaved 콜백 함수를 실행하게 된다.
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
-        );
+
+        // 아래처럼 하면 이전 페이지로 돌아가기 가능.
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => const InterestsScreen(),
+        //   ),
+        // );
+
+        // 아래 처럼 하면 이전 페이지로 돌아가기 불가능.
+        // 페이지를 삭제하기 때문.
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const InterestsScreen(),
+            ), (route) {
+          print(route);
+          // return true; // true로 하면 이전 루트를 유지한다.
+          return false; // 이전 루트를 유지하지 않는다.
+        });
       }
     }
   }

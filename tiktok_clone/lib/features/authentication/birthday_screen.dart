@@ -35,10 +35,19 @@ class BirthdayScreenState extends State<BirthdayScreen> {
   void onNextTap() {
     //따로 onNextTap 안에 context를 보내지 않아도 된다.
     //StatefulWidget안에 State안에 있다면 어디서든 context를 사용할수 있기 때문이다.
-    Navigator.of(context).push(
+
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => const InterestsScreen(),
+    //   ),
+    // );
+    // 계정을 생성한 후에도 user가 계정 생성 form으로 돌아갈수 있다.
+    // 따라서 아래와 같이 수정한다.
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const InterestsScreen(),
       ),
+      (route) => false,
     );
   }
 
