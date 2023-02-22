@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -9,7 +12,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectIndex = 0;
+  int _selectedIndex = 0;
 
   final screens = [
     const Center(
@@ -18,70 +21,63 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     const Center(
       child: Text("Search"),
     ),
-    const Center(
-      child: Text("Search"),
-    ),
-    const Center(
-      child: Text("Search"),
-    ),
-    const Center(
-      child: Text("Search"),
-    ),
-    const Center(
-      child: Text("Search"),
-    ),
   ];
 
   void _onTap(int index) {
+    //context.go("/${_tabs[index]}");
     setState(() {
-      _selectIndex = index;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // 커스텀 네비게이션 바.
     return Scaffold(
-      body: screens[_selectIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        //type: BottomNavigationBarType.shifting,
-        //색변하는 신기한 네비게이션 바는 4개 이상부터 백그라운드 컬러가 먹히는데,
-        //위의 타입으로 쉬프팅을 먹이면, 2~3개의 네비게이션 목록으로도 사용 가능하다.
-        currentIndex: _selectIndex,
-        onTap: _onTap,
-        //selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: "What are you ?",
-            backgroundColor: Colors.amber,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.size12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NavTab(
+                text: "Home",
+                isSelected: _selectedIndex == 0,
+                icon: FontAwesomeIcons.house,
+                selectedIcon: FontAwesomeIcons.house,
+                onTap: () => _onTap(0),
+                selectedIndex: _selectedIndex,
+              ),
+              NavTab(
+                text: "Discover",
+                isSelected: _selectedIndex == 1,
+                icon: FontAwesomeIcons.compass,
+                selectedIcon: FontAwesomeIcons.solidCompass,
+                onTap: () => _onTap(1),
+                selectedIndex: _selectedIndex,
+              ),
+              Gaps.h24,
+              Gaps.h24,
+              NavTab(
+                text: "Inbox",
+                isSelected: _selectedIndex == 3,
+                icon: FontAwesomeIcons.message,
+                selectedIcon: FontAwesomeIcons.solidMessage,
+                onTap: () => _onTap(3),
+                selectedIndex: _selectedIndex,
+              ),
+              NavTab(
+                text: "Profile",
+                isSelected: _selectedIndex == 4,
+                icon: FontAwesomeIcons.user,
+                selectedIcon: FontAwesomeIcons.solidUser,
+                onTap: () => _onTap(4),
+                selectedIndex: _selectedIndex,
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: "What are you?",
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: "What are you?",
-            backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: "What are you?",
-            backgroundColor: Colors.yellow,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: "What are you?",
-            backgroundColor: Colors.teal,
-          ),
-        ],
+        ),
       ),
     );
   }
