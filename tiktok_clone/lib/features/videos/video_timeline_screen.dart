@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 class VideoTimeLineScreen extends StatefulWidget {
-  const VideoTimeLineScreen({super.key});
+  // const VideoTimeLineScreen({super.key});
+  const VideoTimeLineScreen({Key? key}) : super(key: key);
 
   @override
   State<VideoTimeLineScreen> createState() => _VideoTimeLineScreenState();
@@ -71,6 +72,7 @@ class _VideoTimeLineScreenState extends State<VideoTimeLineScreen> {
       itemCount: _itemCount,
       itemBuilder: (context, index) => VideoPost(
         onvideoFinished: _onvideoFinished,
+        index: index,
       ),
       // Container(
       //   color: colors[index],
