@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -23,10 +24,21 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost> {
+class _VideoPostState extends State<VideoPost>
+    with SingleTickerProviderStateMixin
+// with 키워드에 Mixin을 사용하면, 그 클래스를 복사해 오겠다는 뜻.
+// 그 클래스의 메서드와 속성을 전부 가져오는 것.
+// 위젯이 보일 때만 Ticker를 제공해 준다는 것.
+{
   // 작업은 State에서 한다.
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/video.mp4");
+
+  bool _isPaused = false;
+
+  final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  late final AnimationController _animationController;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.duration ==
@@ -38,14 +50,26 @@ class _VideoPostState extends State<VideoPost> {
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize(); //1단계 초기화.
     //_videoPlayerController.play(); //2단계 플레이.
-    setState(() {});
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     _initVideoPlayer();
+
+    _animationController = AnimationController(
+      vsync: this, // with SingleTickerProviderStateMixin 가 필수로 필요.
+      // offscreen 애니메이션의 불필요한 리소스를 방지하는 것.
+      // 위젯이 안 보일 떄는 애니메이션이 작동하지 않게 하는 것.
+      // this는 자기자신이 속한 클래스.
+      lowerBound: 1.0,
+      upperBound: 1.5,
+      value: 1.5, // 시작 value
+      duration: _animationDuration,
+    );
   }
 
   @override
@@ -64,13 +88,20 @@ class _VideoPostState extends State<VideoPost> {
     // 정지.
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
+      _animationController.reverse();
+      //_animationController.reset();
     } else {
       _videoPlayerController.play();
+      _animationController.forward();
     }
+    setState(() {
+      _isPaused = !_isPaused;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(_animationController.value);
     return VisibilityDetector(
       key: Key("${widget.index}"),
       onVisibilityChanged: _onVisibilityChanged,
@@ -89,19 +120,74 @@ class _VideoPostState extends State<VideoPost> {
               onTap: _onTogglePause,
             ),
           ),
-          const Positioned.fill(
+          Positioned.fill(
             child: IgnorePointer(
               // 아이콘에 보내는 신호를 무시.
               // Position을 감싸면 안된다. Position은 언제나 Stack의 child 여야 한다.
               child: Center(
-                child: FaIcon(
-                  FontAwesomeIcons.play,
-                  color: Colors.white,
-                  size: Sizes.size72,
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    // builder 함수인데, _animationController 의 값이 변할 때마다 실행된다.
+                    // setState로 전제 빌더를 재 실행 하는 것과는 다르게, 아래 이부분만 재실행 하는 애니메이션 빌더인 것이다.
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      child: child,
+                    );
+                  },
+                  child: AnimatedOpacity(
+                    opacity: _isPaused ? 1 : 0,
+                    duration: _animationDuration,
+                    child: const FaIcon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
+                      size: Sizes.size72,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
+          Positioned(
+              bottom: 30,
+              left: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    '@호호',
+                    style: TextStyle(
+                      fontSize: Sizes.size20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Gaps.v20,
+                  Text(
+                    'This is my Car',
+                    style: TextStyle(
+                      fontSize: Sizes.size14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w200,
+                    ),
+                  )
+                ],
+              )),
+          Positioned(
+              bottom: 20,
+              right: 10,
+              child: Column(
+                children: const [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    foregroundImage: NetworkImage(
+                        "https://avatars.githubusercontent.com/u/101851921?v=4"),
+                    child: Text("hoho"),
+                  ),
+                ],
+              ))
         ],
       ),
     );
