@@ -57,6 +57,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     // 커스텀 네비게이션 바.
     return Scaffold(
+      resizeToAvoidBottomInset: false, // 키보드가 나타나면서 찌그러지는 현상을 없애 준다. 기본적으로 true
+      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(

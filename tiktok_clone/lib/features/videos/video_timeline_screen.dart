@@ -63,28 +63,73 @@ class _VideoTimeLineScreenState extends State<VideoTimeLineScreen> {
     super.dispose();
   }
 
+// 위아래로 그냥 동영상 바꿀때는 이렇게.
+  // @override
+  // Widget build(BuildContext context) {
+  //   return PageView.builder(
+  //     controller: _pageController,
+  //     // builder을 사용하면 스크롤 할때 데이터를 불러온다.
+  //     //pageSnapping: false, // 자동으로 안넘어가게.
+  //     scrollDirection: Axis.vertical, // 세로 방향 스크롤
+  //     onPageChanged: _onPageChanged,
+  //     itemCount: _itemCount,
+  //     itemBuilder: (context, index) => VideoPost(
+  //       onvideoFinished: _onvideoFinished,
+  //       index: index,
+  //     ),
+  //     // Container(
+  //     //   color: colors[index],
+  //     //   child: Center(
+  //     //     child: Text(
+  //     //       "Screen $index",
+  //     //       style: const TextStyle(fontSize: Sizes.size64),
+  //     //     ),
+  //     //   ),
+  //     // ), //builder의 필수 파라메터.
+  //   );
+  //   //여기서 scaffold를 쓰지 않아도 되는 이유.
+  //   // 이것을 사용 하는 곳이, scaffold 안에 있기 때문.
+  // }
+
+  // 이거는 화면을 알래로 당겨서 새로 고침 하는 화면.
+
+  Future<void> _onRefresh() {
+    return Future.delayed(const Duration(
+      seconds: 5,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: _pageController,
-      // builder을 사용하면 스크롤 할때 데이터를 불러온다.
-      //pageSnapping: false, // 자동으로 안넘어가게.
-      scrollDirection: Axis.vertical, // 세로 방향 스크롤
-      onPageChanged: _onPageChanged,
-      itemCount: _itemCount,
-      itemBuilder: (context, index) => VideoPost(
-        onvideoFinished: _onvideoFinished,
-        index: index,
+    return RefreshIndicator(
+      displacement: 100, // 새로 고침 아이콘이 돌아가는 위치
+      edgeOffset: 200, // 새로 고침 아이콘이 나타나는 위치
+      //backgroundColor: Colors.red,// 아이콘 배경 색.
+      color: Theme.of(context).primaryColor, // 화살표 색깔.
+      // strokeWidth: 10, // 화살표 두께.
+      // 이때 새로고침 하기위해 당기는 화면의 뒤쪽 색깔이 화이트 인데, 이건 main_navigation_screen의 기본 컬러가 화이트 색이기 떄문이다.
+      onRefresh: _onRefresh,
+      child: PageView.builder(
+        controller: _pageController,
+        // builder을 사용하면 스크롤 할때 데이터를 불러온다.
+        //pageSnapping: false, // 자동으로 안넘어가게.
+        scrollDirection: Axis.vertical, // 세로 방향 스크롤
+        onPageChanged: _onPageChanged,
+        itemCount: _itemCount,
+        itemBuilder: (context, index) => VideoPost(
+          onvideoFinished: _onvideoFinished,
+          index: index,
+        ),
+        // Container(
+        //   color: colors[index],
+        //   child: Center(
+        //     child: Text(
+        //       "Screen $index",
+        //       style: const TextStyle(fontSize: Sizes.size64),
+        //     ),
+        //   ),
+        // ), //builder의 필수 파라메터.
       ),
-      // Container(
-      //   color: colors[index],
-      //   child: Center(
-      //     child: Text(
-      //       "Screen $index",
-      //       style: const TextStyle(fontSize: Sizes.size64),
-      //     ),
-      //   ),
-      // ), //builder의 필수 파라메터.
     );
     //여기서 scaffold를 쓰지 않아도 되는 이유.
     // 이것을 사용 하는 곳이, scaffold 안에 있기 때문.

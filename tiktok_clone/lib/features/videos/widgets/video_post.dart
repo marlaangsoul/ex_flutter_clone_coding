@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -79,9 +81,13 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+    // 첫번째 결함은 이 부분 때문.
+    // 영상의 visibilit가 변하고 영상이 전부 화면에 들어가 있으면 재생이 안되면, 재생 시켜주는 조건.
   }
 
   void _onTogglePause() {
@@ -99,10 +105,31 @@ class _VideoPostState extends State<VideoPost>
     });
   }
 
+  // 코멘트 버튼(댓글)
+  void _onCommentsTap(BuildContext context) async {
+    //showmodalbottomSheet가 나올때 일시정시 되도록
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause();
+    }
+    // 바닥에서 올라오는 모달창
+    // 이렇 게 아주 쉽게 만들 수 있다.
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled:
+          true, // 이렇게 하면 bottom sheet의 사이즈를 final size = MediaQuery.of(context).size; 이걸로 바꿀수 있다.
+      // barrierColor: Colors.red, // 바텀에서 올라오는 모달 창 을 제외한 나머지 컬러.
+      backgroundColor: Colors.transparent, // Scaffold의 색으로 표현.
+      builder: (context) => const VideoComments(),
+    );
+    print('async 와 await를 찍으면 사용자가 다시 화면으로 돌아간 것을 알 수 있다.');
+    _onTogglePause();
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(_animationController.value);
     return VisibilityDetector(
+      // 버그 1.첫번째 화면에서 화면을 정지하고 새로고침 하면 정지된 것도 재생이 된다.
       key: Key("${widget.index}"),
       onVisibilityChanged: _onVisibilityChanged,
       child: Stack(
@@ -155,7 +182,7 @@ class _VideoPostState extends State<VideoPost>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    '@호호',
+                    '@marlaangsoul',
                     style: TextStyle(
                       fontSize: Sizes.size20,
                       color: Colors.white,
@@ -177,14 +204,32 @@ class _VideoPostState extends State<VideoPost>
               bottom: 20,
               right: 10,
               child: Column(
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 25,
                     backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.red,
                     foregroundImage: NetworkImage(
                         "https://avatars.githubusercontent.com/u/101851921?v=4"),
-                    child: Text("hoho"),
+                    child: Text("BH"),
+                  ),
+                  Gaps.v16,
+                  const VideoButton(
+                    icon: FontAwesomeIcons.solidHeart,
+                    text: "2.9M",
+                  ),
+                  Gaps.v16,
+                  GestureDetector(
+                    onTap: () => _onCommentsTap(context),
+                    child: const VideoButton(
+                      icon: FontAwesomeIcons.solidComment,
+                      text: "33K",
+                    ),
+                  ),
+                  Gaps.v16,
+                  const VideoButton(
+                    icon: FontAwesomeIcons.share,
+                    text: "Share",
                   ),
                 ],
               ))
