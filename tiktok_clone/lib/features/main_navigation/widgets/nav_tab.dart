@@ -27,7 +27,9 @@ class NavTab extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTap(),
         child: Container(
-          color: Colors.black, // red로 변경해보면 아주 작은 구역만 표시 된다.
+          color: selectedIndex == 0
+              ? Colors.black
+              : Colors.white, // red로 변경해보면 아주 작은 구역만 표시 된다.
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: isSelected ? 1 : 0.6,
@@ -36,13 +38,13 @@ class NavTab extends StatelessWidget {
               children: [
                 FaIcon(
                   isSelected ? selectedIcon : icon,
-                  color: Colors.white,
+                  color: selectedIndex == 0 ? Colors.white : Colors.black,
                 ),
                 Gaps.v5,
                 Text(
                   text,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: selectedIndex == 0 ? Colors.white : Colors.black,
                   ),
                 )
               ],

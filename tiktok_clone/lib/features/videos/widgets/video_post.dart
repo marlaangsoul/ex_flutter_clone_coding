@@ -83,11 +83,19 @@ class _VideoPostState extends State<VideoPost>
   void _onVisibilityChanged(VisibilityInfo info) {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
+        // 첫번째 결함은 이 부분 때문.
+        // 영상의 visibilit가 변하고 영상이 전부 화면에 들어가 있으면 재생이 안되면, 재생 시켜주는 조건.
+        // 이렇게 수정완료.
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
-    // 첫번째 결함은 이 부분 때문.
-    // 영상의 visibilit가 변하고 영상이 전부 화면에 들어가 있으면 재생이 안되면, 재생 시켜주는 조건.
+
+    // 동영상 페이지를 넘어가도, 백그라운드에서 동영상이 계속 재생되는 문제가 있었다. 그것을 아래와 같이 한줄로 수정해 줄수 있다.
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
+      //비디오가 재생되고 있다면, 그와 동시에 visibleFraction(전혀 보이지 않는다면.)
+      // 동영상이 재생되고 있는 상태에서 화면에서 보이지 않는다면 일시정지해라.
+    }
   }
 
   void _onTogglePause() {
