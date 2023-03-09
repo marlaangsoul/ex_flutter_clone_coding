@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 
 void main() {
   runApp(const TikTokApp());
@@ -20,6 +20,8 @@ class TikTokApp extends StatelessWidget {
           cursorColor: Color(0xFFE9435A),
           //selectionColor: Color(0xFFE9435A), // 선택했을 때의 색상.
         ),
+        // splashColor: Colors.transparent, // transparen를 하면 스플래시 효과가 사라진다.
+        // highlightColor: Colors.transparent, // 이렇게 하면 누르고 있는 스플래시 효과가 사라진다.
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
@@ -32,7 +34,7 @@ class TikTokApp extends StatelessWidget {
         ),
       ),
       //home: const SignUpScreen(),
-      home: const MainNavigationScreen(),
+      home: const ActivityScreen(),
     );
   }
 }

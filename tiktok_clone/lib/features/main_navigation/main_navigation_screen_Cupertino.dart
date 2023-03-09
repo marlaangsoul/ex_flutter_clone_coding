@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+class MainNavigationScreenC extends StatefulWidget {
+  const MainNavigationScreenC({super.key});
 
   @override
-  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+  State<MainNavigationScreenC> createState() => _MainNavigationCScreenState();
 }
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
+class _MainNavigationCScreenState extends State<MainNavigationScreenC> {
   int _selectIndex = 0;
 
   final screens = [

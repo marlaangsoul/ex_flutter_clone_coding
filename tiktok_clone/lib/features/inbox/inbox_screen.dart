@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
 
   void _onDmPressed() {}
+
+  void _onActivityTap(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const ActivityScreen(),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +26,14 @@ class InboxScreen extends StatelessWidget {
             icon: const FaIcon(
               FontAwesomeIcons.paperPlane,
             ),
-          )
+          ),
         ],
       ),
       body: ListView(
         children: [
           ListTile(
-            onTap: () {}, // 탭 기능을 넣어주면 바로 클릭 시 이벤트가 발생한다.
+            onTap: () =>
+                _onActivityTap(context), // 탭 기능을 넣어주면 바로 클릭 시 이벤트가 발생한다.
             // selected: true, // 선택했을 때 블루 컬러로 바꿀수 있다.
             title: const Text(
               'Activity',
@@ -78,7 +86,7 @@ class InboxScreen extends StatelessWidget {
               size: Sizes.size14,
               color: Colors.black,
             ),
-          )
+          ),
         ],
       ),
     );
