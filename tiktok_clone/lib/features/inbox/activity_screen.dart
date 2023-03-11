@@ -69,7 +69,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 // 위와 같은 방법. 위의 두문장과 같이 코딩 후, RotationTransition 사용.
 
   late final Animation<Offset> _panelAnimation = Tween<Offset>(
-    begin: const Offset(0, -1), // 비율이다. 50%
+    begin: const Offset(0, -1), // 비율이다. -1은 -100%로 완전히 위로 올려 버렸다고 생각하면 된다.
     end: Offset.zero,
   ).animate(_animationController);
 
@@ -82,7 +82,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     setState(() {});
   }
 
-  void _toggleAnimation() async {
+  void _toggleAnimations() async {
     if (_animationController.isCompleted) {
       await _animationController.reverse();
     } else {
@@ -100,8 +100,10 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _toggleAnimation,
+          onTap: _toggleAnimations,
           child: Row(
+            mainAxisSize: MainAxisSize.min, // All activity screen의 가운데 정렬을 위해서.
+            // 이렇게 하면 Row가 최소한의 공간만 차지하게 되어, 가운데 정렬이 된다.
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text("All activity"),
@@ -223,9 +225,10 @@ class _ActivityScreenState extends State<ActivityScreen>
           ),
           if (_showBarrier)
             AnimatedModalBarrier(
+              // 이 위치의 뒤에 있는 모든 위젯을 막아버린다.
               color: _barrierAnimation,
               dismissible: true,
-              onDismiss: _toggleAnimation,
+              onDismiss: _toggleAnimations,
             ),
           SlideTransition(
             position: _panelAnimation,

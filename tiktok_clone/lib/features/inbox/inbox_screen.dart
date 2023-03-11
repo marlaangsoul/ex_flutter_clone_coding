@@ -2,13 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
+import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 
-class InboxScreen extends StatelessWidget {
+class InboxScreen extends StatefulWidget {
   const InboxScreen({super.key});
 
-  void _onDmPressed() {}
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
 
-  void _onActivityTap(BuildContext context) {
+class _InboxScreenState extends State<InboxScreen> {
+  void _onDmPressed() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const ChatsScreen()));
+  }
+
+  // void _onDmPressed(BuildContext context) {
+  //     Navigator.of(context)
+  //         .push(MaterialPageRoute(builder: (context) => const ActivityScreen()));
+  //   }
+  // StatelessWidget일 때는 context를 가질 수 없다. build 메소드 만이 context를 가질 수 있다.
+  // 그래서 이런걸 해줘야 한다.  () => _onDmPressed(context),
+  // 아니면 statefulWidget으로 바꿔주면, context를 가질 수 있기 때문에  _onDmPressed 이렇게만 작성해 주어도 된다.
+  // 물론 statelessWidget이 훨씬 좋다.
+
+  void _onActivityTap() {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => const ActivityScreen(),
     ));
@@ -32,8 +50,7 @@ class InboxScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            onTap: () =>
-                _onActivityTap(context), // 탭 기능을 넣어주면 바로 클릭 시 이벤트가 발생한다.
+            onTap: _onActivityTap, // 탭 기능을 넣어주면 바로 클릭 시 이벤트가 발생한다.
             // selected: true, // 선택했을 때 블루 컬러로 바꿀수 있다.
             title: const Text(
               'Activity',
