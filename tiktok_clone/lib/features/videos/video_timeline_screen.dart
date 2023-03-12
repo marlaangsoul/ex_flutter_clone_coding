@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 class VideoTimeLineScreen extends StatefulWidget {
+  const VideoTimeLineScreen({super.key});
+
   // const VideoTimeLineScreen({super.key});
-  const VideoTimeLineScreen({Key? key}) : super(key: key);
 
   @override
   State<VideoTimeLineScreen> createState() => _VideoTimeLineScreenState();
@@ -54,12 +55,18 @@ class _VideoTimeLineScreenState extends State<VideoTimeLineScreen> {
     // 다음으로 자동으로 넘어가게 하는 방법.
   }
 
+  // @override
+  // void dispose() {
+  //   _pageController.nextPage(
+  //     duration: _scrollDuration,
+  //     curve: _scrollCurve,
+  //   );
+  //   super.dispose();
+  // }
+
   @override
   void dispose() {
-    _pageController.nextPage(
-      duration: _scrollDuration,
-      curve: _scrollCurve,
-    );
+    _pageController.dispose();
     super.dispose();
   }
 

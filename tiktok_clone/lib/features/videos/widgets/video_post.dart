@@ -123,13 +123,13 @@ class _VideoPostState extends State<VideoPost>
     // 이렇 게 아주 쉽게 만들 수 있다.
     await showModalBottomSheet(
       context: context,
-      isScrollControlled:
-          true, // 이렇게 하면 bottom sheet의 사이즈를 final size = MediaQuery.of(context).size; 이걸로 바꿀수 있다.
+      isScrollControlled: true,
+      // 이렇게 하면 bottom sheet의 사이즈를 final size = MediaQuery.of(context).size; 이걸로 바꿀수 있다.
       // barrierColor: Colors.red, // 바텀에서 올라오는 모달 창 을 제외한 나머지 컬러.
       backgroundColor: Colors.transparent, // Scaffold의 색으로 표현.
       builder: (context) => const VideoComments(),
     );
-    print('async 와 await를 찍으면 사용자가 다시 화면으로 돌아간 것을 알 수 있다.');
+    //print('async 와 await를 찍으면 사용자가 다시 화면으로 돌아간 것을 알 수 있다.');
     _onTogglePause();
   }
 

@@ -96,7 +96,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(_notifications); // 사라지는 것을 확인할 수 있다.
+    // print(_notifications); // 사라지는 것을 확인할 수 있다.
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(

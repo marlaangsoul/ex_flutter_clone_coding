@@ -18,7 +18,7 @@ class BirthdayScreenState extends State<BirthdayScreen> {
 
   DateTime initiaDate = DateTime.now();
 
-  String Birthday = "";
+  String birthday = "";
 
   @override
   void initState() {

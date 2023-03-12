@@ -38,7 +38,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
             MaterialPageRoute(
               builder: (context) => const InterestsScreen(),
             ), (route) {
-          print(route);
+          // print(route);
           // return true; // true로 하면 이전 루트를 유지한다.
           return false; // 이전 루트를 유지하지 않는다.
         });

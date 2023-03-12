@@ -18,11 +18,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       TextEditingController(text: "Initial Text");
 
   void _onSearchChanged(String value) {
-    print("Changed $value");
+    //print("Changed $value");
   }
 
   void _onSearchSubmitted(String value) {
-    print("Submitted $value");
+    // print("Submitted $value");
   }
 
   @override
